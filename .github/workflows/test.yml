@@ -22,4 +22,4 @@ jobs:
         python -m pip install --upgrade psycopg-binary Django django-syzygy
 
     - name: Run tests
-      run: manage.py makemigrations
+      run: python manage.py makemigrations
