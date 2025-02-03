@@ -1,0 +1,41 @@
+---
+
+services:
+  app:
+    build:
+      context: .
+    entrypoint: ""
+    command: sleep infinity
+    user: app
+    volumes:
+      - .:/app:cached
+    environment:
+      SHELL: /bin/bash
+      IPYTHONDIR: /app/.ipython
+      HISTFILE: /app/.bash_history
+      PYTHONDONTWRITEBYTECODE: x
+      PYTHONWARNINGS: always
+      DEBUG: True
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - internal
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: syzygy
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - internal
+
+volumes:
+  db:
+
+networks:
+  internal:
